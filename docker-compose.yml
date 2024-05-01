@@ -8,7 +8,7 @@ services:
     networks:
       - graylog-net
     volumes:
-      - mongodb_data:/data/db
+      - graylogd_mongodb_data:/data/db
 
   opensearch:
     image: opensearchproject/opensearch:latest
@@ -24,7 +24,7 @@ services:
     networks:
       - graylog-net
     volumes:
-      - opensearch_data:/usr/share/opensearch/data
+      - graylogd_opensearch_data:/usr/share/opensearch/data
 
   graylog:
     image: graylog/graylog:5.2
@@ -55,15 +55,15 @@ services:
       - mongodb
       - opensearch
     volumes:
-      - graylog_data:/usr/share/graylog/data
-      - graylog_logs:/var/log/graylog
+      - graylogd_graylog_data:/usr/share/graylog/data
+      - graylogd_graylog_logs:/var/log/graylog
 
 networks:
   graylog-net:
     driver: bridge
 
 volumes:
-  mongodb_data:
-  opensearch_data:
-  graylog_data:
-  graylog_logs:
+  graylogd_mongodb_data:
+  graylogd_opensearch_data:
+  graylogd_graylog_data:
+  graylogd_graylog_logs:
