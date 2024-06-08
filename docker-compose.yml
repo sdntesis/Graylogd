@@ -8,7 +8,7 @@ services:
     networks:
       - graylog-net
     volumes:
-      - graylogd_mongodb_data:/data/db
+      - /opt/graylog/mongo_data:/data/db
 
   opensearch:
     image: opensearchproject/opensearch:latest
@@ -24,7 +24,7 @@ services:
     networks:
       - graylog-net
     volumes:
-      - graylogd_opensearch_data:/usr/share/opensearch/data
+      - /opt/graylog/opensearch_data:/usr/share/opensearch/data
 
   graylog:
     image: graylog/graylog:5.2
@@ -36,11 +36,11 @@ services:
       - GRAYLOG_ROOT_PASSWORD_SHA2=aea3cc31f52ba4b24b56d2d9f3652b17818de6fe6f249c7640e345bfd58c08f4
       - GRAYLOG_MONGODB_URI=mongodb://mongodb:27017/graylog
       - GRAYLOG_ELASTICSEARCH_HOSTS=http://opensearch:9200
-      #- GRAYLOG_ROOT_TIMEZONE=America/Guayaquil
+      - GRAYLOG_ROOT_TIMEZONE=America/Guayaquil
     ports:
       - 9000:9000
-      - 514:514
-      - 514:514/udp
+      - 3514:3514
+      - 3514:3514/udp
       - 4514:4514
       - 4514:4514/udp
       - 5514:5514
@@ -55,15 +55,9 @@ services:
       - mongodb
       - opensearch
     volumes:
-      - graylogd_graylog_data:/usr/share/graylog/data
-      - graylogd_graylog_logs:/var/log/graylog
+      - /opt/graylog/journal:/usr/share/graylog/data/journal
+      - /var/lib/docker/volumes/bc43294758fdbdf0ea7c60c5dea534a8272f89d6f618f46335a542ec7c77bf99/_data/config:/usr/share/graylog/data/config
 
 networks:
   graylog-net:
     driver: bridge
-
-volumes:
-  graylogd_mongodb_data:
-  graylogd_opensearch_data:
-  graylogd_graylog_data:
-  graylogd_graylog_logs:
